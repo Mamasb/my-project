@@ -1,28 +1,16 @@
+# scripts/main.py
 import sys
-import os
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+sys.path.append('../')
 
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-from models.user import Base, User
-from config.config import DATABASE_URL
+from db import DB
+from models.user import User
 
-# Set up the engine and session
-engine = create_engine(DATABASE_URL)
+# Create DB instance
+my_db = DB()
 
-# Create the tables in the database (if not already created)
-Base.metadata.create_all(engine)
+# Add a user
+user_1 = my_db.add_user("test@test.com", "SuperHashedPwd")
+print(user_1.id)
 
-# Print table name and columns
-print(User.__tablename__)
-for column in User.__table__.columns:
-    print(f"{column}: {column.type}")
-
-# Create a session to interact with the database
-Session = sessionmaker(bind=engine)
-session = Session()
-
-# Query and display all users
-users = session.query(User).all()
-for user in users:
-    print(f"ID: {user.id}, Name: {user.name}, Email: {user.email}")
+user_2 = my_db.add_user("test1@test.com", "SuperHashedPwd1")
+print(user_2.id)
