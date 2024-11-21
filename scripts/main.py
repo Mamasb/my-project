@@ -5,6 +5,7 @@ from db import DB
 from models.user import User
 from sqlalchemy.exc import InvalidRequestError
 from sqlalchemy.orm.exc import NoResultFound
+from auth import _hash_password  # Importing _hash_password from auth.py
 
 # Create DB instance
 my_db = DB()
@@ -36,3 +37,7 @@ try:
     print(f"Found User ID: {found_user.id}")
 except InvalidRequestError:
     print("Invalid query argument passed")
+
+# Test: Hash a password
+hashed_password = _hash_password("MySecurePassword123")
+print(f"Hashed Password: {hashed_password}")
